@@ -1,10 +1,8 @@
 # blocker/forms.py
 from django import forms
-from .models import BlockedApp
+from .models import BlockedItem
 
-class BlockedAppForm(forms.ModelForm):
-    path = forms.CharField(widget=forms.FileInput)
-
+class BlockedItemForm(forms.ModelForm):
     class Meta:
-        model = BlockedApp
+        model = BlockedItem
         fields = "__all__"
