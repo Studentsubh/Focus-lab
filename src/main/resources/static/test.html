@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Focus Blocker Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    button {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      background-color: #0078d7;
+      color: white;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    pre {
+      text-align: left;
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Focus Blocker Test Page</h1>
+  <p>Click <strong>Start Blocking</strong> to block YouTube.com via Spring Boot → Django.</p>
+
+  <button onclick="addAndStart()">Start Blocking</button>
+  <button onclick="stopBlocking()">Stop Blocking</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    const output = document.getElementById("output");
+
+    async function addAndStart() {
+      try {
+        const response = await fetch("http://localhost:8080/api/focus/start", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: "YouTube",
+            type: "website",
+            url: "https://www.youtube.com"
+          }),
+        });
+        const data = await response.json();
+        output.textContent = "Started blocking: " + JSON.stringify(data, null, 2);
+        console.log("Added block:", data);
+      } catch (error) {
+        output.textContent = "Error: " + error;
+        console.error(error);
+      }
+    }
+
+    async function stopBlocking() {
+      try {
+        const response = await fetch("http://localhost:8080/api/focus/stop", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: "YouTube",
+            type: "website",
+            url: "https://www.youtube.com"
+          }),
+        });
+        const data = await response.json();
+        output.textContent = "Stopped blocking: " + JSON.stringify(data, null, 2);
+        console.log("Stopped block:", data);
+      } catch (error) {
+        output.textContent = "Error: " + error;
+        console.error(error);
+      }
+    }
+  </script>
+
+</body>
+</html>
